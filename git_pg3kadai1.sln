@@ -5,6 +5,11 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "git_pg3kadai1", "git_pg3kadai1.vcxproj", "{F85D27C1-0DE9-4105-BDAF-16177DA80234}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ソリューション項目", "ソリューション項目", "{D3173F7F-2261-4CA3-8921-2AA117A9B4CF}"
+	ProjectSection(SolutionItems) = preProject
+		..\Users\k024g\AppData\Roaming\Microsoft\Windows\Network Shortcuts\.editorconfig = ..\Users\k024g\AppData\Roaming\Microsoft\Windows\Network Shortcuts\.editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
