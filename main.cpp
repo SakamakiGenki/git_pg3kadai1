@@ -1,30 +1,27 @@
 #include<stdio.h>
 
-template <typename T>
+int Recursive(int kyuryou, int kotei, int jikan) {
 
-T Min(T a, T b) 
-{
-	if (a < b) 
-	{
-		return (a);
-	} else {
-		return (b);
-	}
-	
-}
+	//if
+	if (kyuryou > kotei) {
 
-template <>
-char Min<char>(char a, char b) {
+		printf("%dŠÔŒã‚É’´‚¦‚é", jikan);
+		return jikan;
+	} 
+	//printf
+	printf("%d %d\n", kyuryou, kotei);
+	kyuryou += kyuryou * 2 - 50;
 
-	printf("”šˆÈŠO‚Í‘ã“ü‚Å‚«‚Ü‚¹‚ñB");
-	return 0;
+	return (Recursive(kyuryou, ++jikan, kotei += 1072));
+
 }
 
 int main() {
 
-	printf("%d\n", Min<int>(2, 0));
-	printf("%c\n", Min<char>('g','d'));
-	printf("%.1f\n", Min<float>(200.0f, 300.0f));
-	printf("%.1lf\n", Min<double>(200.0f, 300.0f));
+	int ippan = 1072;
+	int sai = 100;
+	int jikan = 1;
+	int result = Recursive(sai, jikan, ippan);;
+
 	return 0;
 }
