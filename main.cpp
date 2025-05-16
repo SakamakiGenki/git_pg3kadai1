@@ -1,59 +1,54 @@
 #include <stdio.h>
-#include <windows.h>
+#include <Windows.h>
 #include <time.h>
-
-// 関数ポインタ PFunc を定義
-typedef void (*PFunc)(int*, int*);
+#include <functional>
 
 // コールバック関数
-void DispResult(int* s, int* kazu) {
-    int kekka = rand() % 2;  // ランダム関数
+void DispResult(int* s, int* kye) {
+    int dice = rand() % 2;
 
-    if (kekka == *kazu) {
-        if (kekka == 0)
-            printf("%dで丁（偶数）でした! 大当たり!!\n", kekka);
+    if (dice == *kye) {
+        if (dice == 0)
+            printf("%dで丁(偶数)でした。当たり\n", dice);
         else
-            printf("%dで半（奇数）でした! 大当たり!!\n", kekka);
+            printf("%dで半(奇数)でした。当たり\n", dice);
     } else {
-        if (kekka == 0)
-            printf("%dで丁（偶数）でした! 残念!!\n", kekka);
+        if (dice == 1)
+            printf("%dで半(奇数)でした。はずれ\n", dice);
         else
-            printf("%dで半（奇数）でした! 残念!!\n", kekka);
+            printf("%dで丁(偶数)でした。はずれ\n", dice);
     }
 }
 
-// コールバック関数を呼び出す
-void setTimeout(PFunc p, int second, int kazu) {
-    puts("さて結果は…\n");
-
+// setTimeout関数
+void setTimeout(std::function<void(int*, int*)> p, int second, int kye) {
     for (int i = 0; i < second; i++) {
         Sleep(1000);  // 1秒待つ
         printf("%d...\n", second - i);
     }
-
-    p(&second, &kazu);
+    p(&second, &kye);  // コールバック関数を呼ぶ
 }
 
 int main() {
-    int kazu = 0;
+    int kye;
 
-    srand((unsigned int)time(NULL));  // Cスタイルのキャスト
+    srand((unsigned int)time(NULL));
+    printf("丁(偶数)なら0、半(奇数)なら1を打つ\n");
+    scanf_s("%d", &kye);
 
-    printf("丁（偶数）なら0、半（奇数）なら1を入力してください\n");
-    scanf_s("%d",&kazu);  // scanf_s は Visual Studio 専用なので、一般的な scanf に修正
-
-    if (kazu == 0) {
-        puts("あなたは丁（偶数）を選びましたね？");
+    if (kye == 0) {
+        puts("あなたは丁(偶数)を選びました");
     } else {
-        puts("あなたは半（奇数）を選びましたね？");
+        puts("あなたは半(奇数)を選びました");
     }
 
-    PFunc p;
-    p = DispResult;  // Disp関数のアドレスを代入
+    // 関数ポインタとしてラムダ関数をstd::function型に代入
+    std::function<void(int*, int*)> p = [](int* s, int* kye) {
+        DispResult(s, kye);
+        };
 
-    setTimeout(p, 3, kazu);
+    setTimeout(p, 3, kye);
 
     return 0;
 }
-
 
