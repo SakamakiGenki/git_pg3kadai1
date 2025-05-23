@@ -1,54 +1,56 @@
-#include <stdio.h>
-#include <Windows.h>
-#include <time.h>
-#include <functional>
+#include <iostream>
+using namespace std;
 
-// コールバック関数
-void DispResult(int* s, int* kye) {
-    int dice = rand() % 2;
+class Enemy {
+public:
+    void Update();
 
-    if (dice == *kye) {
-        if (dice == 0)
-            printf("%dで丁(偶数)でした。当たり\n", dice);
-        else
-            printf("%dで半(奇数)でした。当たり\n", dice);
-    } else {
-        if (dice == 1)
-            printf("%dで半(奇数)でした。はずれ\n", dice);
-        else
-            printf("%dで丁(偶数)でした。はずれ\n", dice);
+    void Approach(); // 接近
+    void Attack();   // 攻撃
+    void Retreat();  // 離脱
+
+    // 関数ポインタテーブル
+    static void (Enemy::* functionTable[])();
+
+private:
+    int index = 0;
+};
+
+void Enemy::Approach() {
+    cout << "敵が接近！" << endl;
+}
+
+void Enemy::Attack() {
+    cout << "敵が攻撃！" << endl;
+}
+
+void Enemy::Retreat() {
+    cout << "敵が離脱" << endl;
+}
+
+void Enemy::Update() {
+    // 関数テーブルから関数を実行
+    (this->*functionTable[index])();
+
+    cout << "次の状態に移行 (0: はい、 他: いいえ): ";
+    int input;
+    cin >> input;
+
+    if (input == 0) {
+        index = (index + 1) % 3;
     }
 }
 
-// setTimeout関数
-void setTimeout(std::function<void(int*, int*)> p, int second, int kye) {
-    for (int i = 0; i < second; i++) {
-        Sleep(1000);  // 1秒待つ
-        printf("%d...\n", second - i);
-    }
-    p(&second, &kye);  // コールバック関数を呼ぶ
-}
+// メンバ関数ポインタテーブル
+void (Enemy::* Enemy::functionTable[])() = {
+    &Enemy::Approach, // インデックス0
+    &Enemy::Attack,   // インデックス1
+    &Enemy::Retreat   // インデックス2
+};
 
 int main() {
-    int kye;
-
-    srand((unsigned int)time(NULL));
-    printf("丁(偶数)なら0、半(奇数)なら1を打つ\n");
-    scanf_s("%d", &kye);
-
-    if (kye == 0) {
-        puts("あなたは丁(偶数)を選びました");
-    } else {
-        puts("あなたは半(奇数)を選びました");
-    }
-
-    // 関数ポインタとしてラムダ関数をstd::function型に代入
-    std::function<void(int*, int*)> p = [](int* s, int* kye) {
-        DispResult(s, kye);
-        };
-
-    setTimeout(p, 3, kye);
-
+    Enemy enemy;
+    while (1) enemy.Update();
     return 0;
 }
 
