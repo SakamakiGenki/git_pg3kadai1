@@ -1,44 +1,25 @@
-#include <cstdio>
+#include <stdio.h>
+#include "IShape.h"
+#include "Circle.h"
+#include "Rectangle.h"
 
-using namespace std;
+int main(void) {
 
-// 抽象クラス Animal
-class Animal {
-public:
+	IShape* shape[2];
 
-    virtual void sound() const = 0;
-};
+	shape[0] = new Circle();
+	shape[1] = new Rectangle();
 
-// 犬クラス Dog（Animal を継承）
-class Dog : public Animal {
-public:
+	printf("円の半径:4\n短形の底辺:2\n短形の高さ:3\n");
 
-    void sound() const override {
+	for (int i = 0; i < 2; i++)
+		shape[i]->Size();
 
-        printf("イヌ鳴き声：ワン\n");
-    }
-};
 
-// 猫クラス Cat（Animal を継承）
-class Cat : public Animal {
-public:
+	printf("\n");
 
-    void sound() const override {
+	for (int i = 0; i < 2; i++)
+		shape[i]->Draw();
 
-        printf("ネコ鳴き声:ニャー\n");
-    }
-};
-
-int main() {
-
-    Animal* animal1 = new Dog();
-    Animal* animal2 = new Cat();
-
-    animal1->sound();
-    animal2->sound();
-
-    delete animal1;
-    delete animal2;
-
-    return 0;
+	return 0;
 }
