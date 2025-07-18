@@ -1,22 +1,31 @@
 #include <iostream>
-#include <thread>
-
-using namespace std;
-
-void PrintThread(uint32_t num) {
-	cout << "thread" << num << endl;
-}
+#include <string>
+#include <chrono>
 
 int main() {
+    // 100,000文字の 'a' で初期化された文字列を作成
+    std::string a(100000, 'a');
 
-	thread t1(PrintThread, 1);
-	t1.join();  // t1 のスレッドが終了するまで待つ
+    // コピーにかかる時間を計測
+    auto start_copy = std::chrono::high_resolution_clock::now();
+    std::string b = a;  // aをbに代入（コピー）
+    auto end_copy = std::chrono::high_resolution_clock::now();  // 現在時刻を取得
+    auto copy_duration = std::chrono::duration_cast<std::chrono::microseconds>(end_copy - start_copy).count();
 
-	thread t2(PrintThread, 2);
-	t2.join();  // t2 のスレッドが終了するまで待つ
+    // ムーブにかかる時間を計測
+    auto start_move = std::chrono::high_resolution_clock::now();  // 現在時刻を取得
+    std::string c = std::move(b);  // ムーブ
+    auto end_move = std::chrono::high_resolution_clock::now();  // 現在時刻を取得
+    auto move_duration = std::chrono::duration_cast<std::chrono::microseconds>(end_move - start_move).count();
 
-	thread t3(PrintThread, 3);
-	t3.join();  // t3 のスレッドが終了するまで待つ
+    // 結果を表示
+    std::cout << "100,000文字を移動とコピーで比較" << std::endl;
+    std::cout << "コピー: " << copy_duration << " μs" << std::endl;
+    std::cout << "移動  : " << move_duration << " μs" << std::endl;
 
-	return 0;
+    // 終了待機
+    std::cout << "続行するには何かキーを押してください…";
+    std::cin.get();
+
+    return 0;
 }
