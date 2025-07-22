@@ -1,31 +1,46 @@
+#include <stdio.h>
+#include <list>
 #include <iostream>
-#include <string>
-#include <chrono>
 
-int main() {
-    // 100,000文字の 'a' で初期化された文字列を作成
-    std::string a(100000, 'a');
+using namespace std;
 
-    // コピーにかかる時間を計測
-    auto start_copy = std::chrono::high_resolution_clock::now();
-    std::string b = a;  // aをbに代入（コピー）
-    auto end_copy = std::chrono::high_resolution_clock::now();  // 現在時刻を取得
-    auto copy_duration = std::chrono::duration_cast<std::chrono::microseconds>(end_copy - start_copy).count();
+int main(void) {
+	//初めは1970年の駅名リスト
+	list <const char*> eki_list{
+		"Tokyo", "Kanda", "Akihabara", "Okachimachi", "Ueno", "Uguisudani", "Nippori", "Tabata", "Komagome", "Sugamo", "Otsuka", "Ikebukuro", "Mejiro", "Takadanobaba", "Sin-Okubo", "Shinjuku", "Yoyogi", "Harajuku", "Shibuya", "Ebisu", "Meguro", "Gotanda", "Osaki", "Sinagawa", "Tamachi", "Hamamatsucho", "Shimbashi", "Yurakucho"
+	};
 
-    // ムーブにかかる時間を計測
-    auto start_move = std::chrono::high_resolution_clock::now();  // 現在時刻を取得
-    std::string c = std::move(b);  // ムーブ
-    auto end_move = std::chrono::high_resolution_clock::now();  // 現在時刻を取得
-    auto move_duration = std::chrono::duration_cast<std::chrono::microseconds>(end_move - start_move).count();
+	// 1970年
+	printf("1970年\n");
+	for (list<const char*>::iterator it_f = eki_list.begin(); it_f != eki_list.end(); it_f++) {
+		std::cout << *it_f << endl;
+	}
 
-    // 結果を表示
-    std::cout << "100,000文字を移動とコピーで比較" << std::endl;
-    std::cout << "コピー: " << copy_duration << " μs" << std::endl;
-    std::cout << "移動  : " << move_duration << " μs" << std::endl;
+	// 2019年
+	printf("\n2019年\n");
+	for (list<const char*>::iterator it_f = eki_list.begin(); it_f != eki_list.end(); ) {
+		// 「Nippori」の直前に「Nishi-Nippori」を追加
+		if (strcmp(*it_f, "Nippori") == 0) {
+			it_f = eki_list.insert(it_f, "Nishi-Nippori"); // 挿入後、it_fは" Nishi-Nippori"を指す
+			std::cout << *it_f << endl;
+			++it_f; // "Nippori"へ進める
+		}
+		std::cout << *it_f << endl;
+		++it_f;
+	}
 
-    // 終了待機
-    std::cout << "続行するには何かキーを押してください…";
-    std::cin.get();
+	// 2022年
+	printf("\n2022年\n");
+	for (list<const char*>::iterator it_f = eki_list.begin(); it_f != eki_list.end(); ) {
+		// 「Sinagawa」の直前に「Takanawa Gateway」を追加
+		if (strcmp(*it_f, "Sinagawa") == 0) {
+			it_f = eki_list.insert(it_f, "Takanawa Gateway"); // 挿入後、it_fは" Takanawa Gateway"を指す
+			std::cout << *it_f << endl;
+			++it_f; // "Sinagawa"へ進める
+		}
+		std::cout << *it_f << endl;
+		++it_f;
+	}
 
-    return 0;
+	return 0;
 }
